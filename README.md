@@ -42,7 +42,7 @@ Note-taking app that allows users to save, view, delete and lock their personal 
 
 ---
 
-### Task 4: 
+### Task 4: -> Ebrahim Gamal
   - `ui\addrecipe\` 
   - `ui\components\` 
   - `ui\onboarding\` 

@@ -7,8 +7,9 @@ import com.example.recipebox.domain.model.Collection
 import com.example.recipebox.domain.repository.CollectionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class CollectionRepositoryImpl(
+class CollectionRepositoryImpl @Inject constructor(
     private val collectionDao: CollectionDao
 ) : CollectionRepository {
     override fun getAllCollections(): Flow<List<Collection>> =

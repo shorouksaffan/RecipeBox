@@ -49,7 +49,7 @@ Note-taking app that allows users to save, view, delete and lock their personal 
 
 ---
 
-### Task 5:
+### Task 5: -> Mohamed Mostafa
   - `ui\recipe\` 
   - `ui\saved\` 
   - `ui\search\`

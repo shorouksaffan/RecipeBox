@@ -27,7 +27,7 @@ Note-taking app that allows users to save, view, delete and lock their personal 
 - Repository setup, README, branch strategy (`dev` / `feature/*` / `master`), and task distribution were handled by **Shorouk Saffan**.
 
 ---
-### Task 1: 
+### Task 1: -> Ismail Ayman
   - `data\`
     
 ---

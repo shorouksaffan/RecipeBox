@@ -38,139 +38,161 @@ fun SearchScreen(
     onRecipeClick: (Recipe) -> Unit,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
-    val query by viewModel.query.collectAsState()
-    val recipes by viewModel.recipes.collectAsState()
-    var selectedTab by remember { mutableStateOf("search") }
+    val searchState by viewModel.searchState.collectAsState()
+    var searchQuery by remember { mutableStateOf("") }
     var showFilter by remember { mutableStateOf(false) }
 
-    Scaffold(
-        bottomBar = {
-            NavBar(
-                selectedItem = selectedTab,
-                onItemSelected = { selectedTab = it }
-            )
-        }
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            // Main Content
-            Column(
+            // 🔍 Top Search Bar
+            Row(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White)
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .background(Color(0xFF3E5BA9), shape = RoundedCornerShape(8.dp)),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                // Top Search Bar
-                Row(
+                TextField(
+                    value = searchQuery,
+                    onValueChange = {
+                        searchQuery = it
+                        if (searchQuery.isNotBlank()) {
+                            viewModel.searchRecipes(searchQuery)
+                        }
+                    },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .background(Color(0xFF3E5BA9), shape = RoundedCornerShape(8.dp)),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    TextField(
-                        value = query,
-                        onValueChange = { viewModel.updateQuery(it) },
-                        modifier = Modifier
-                            .height(50.dp)
-                            .weight(1f)
-                            .padding(start = 8.dp),
-                        placeholder = {
-                            Row {
-                                Icon(Icons.Default.Search, contentDescription = "Search", Modifier.size(22.dp))
-                                Text("Search...", color = Color.Black, fontSize = 18.sp)
-                            }
-                        },
-                        singleLine = true,
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
-                            disabledContainerColor = Color.White,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
-                        )
+                        .height(50.dp)
+                        .weight(1f)
+                        .padding(start = 8.dp),
+                    placeholder = {
+                        Row {
+                            Icon(Icons.Default.Search, contentDescription = "Search", Modifier.size(22.dp))
+                            Text("Search...", color = Color.Black, fontSize = 18.sp)
+                        }
+                    },
+                    singleLine = true,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        disabledContainerColor = Color.White,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
                     )
-                    IconButton(
-                        onClick = { showFilter = true },
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .background(Color.Yellow, shape = RoundedCornerShape(8.dp))
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.outline_filter_alt_24),
-                            contentDescription = "Filter Icon",
-                            tint = Color.Black
-                        )
-                    }
-                }
-
-                // Section Header
-                Text(
-                    text = "Recipes",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 4.dp)
                 )
-
-                // Recipes Grid
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.fillMaxSize()
+                IconButton(
+                    onClick = { showFilter = true },
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .background(Color.Yellow, shape = RoundedCornerShape(8.dp))
                 ) {
-                    items(recipes) { recipe ->
-                        RecipeCard(
-                            recipe = recipe,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
-                                .clickable { onRecipeClick(recipe) }
-                        )
-                    }
+                    Icon(
+                        painter = painterResource(id = R.drawable.outline_filter_alt_24),
+                        contentDescription = "Filter Icon",
+                        tint = Color.Black
+                    )
                 }
             }
 
-            // Overlay + Sliding Filter
-            if (showFilter) {
-                Box(modifier = Modifier.fillMaxSize()) {
+            // 📝 Section Header
+            Text(
+                text = "Recipes",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 4.dp)
+            )
 
-                    // Semi-transparent background overlay
-                    Box(
+            // 🔄 State Handling
+            when (searchState) {
+                is SearchState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                is SearchState.Error -> {
+                    val message = (searchState as SearchState.Error).message
+                    Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color.Black.copy(alpha = 0.4f))
-                            .clickable { showFilter = false }
-                    )
-
-                    // Sliding Filter Panel
-                    AnimatedVisibility(
-                        visible = showFilter,
-                        enter = slideInHorizontally(
-                            initialOffsetX = { fullWidth -> fullWidth },
-                            animationSpec = tween(300)
-                        ),
-                        exit = slideOutHorizontally(
-                            targetOffsetX = { fullWidth -> fullWidth },
-                            animationSpec = tween(300)
-                        ),
-                        modifier = Modifier.align(Alignment.CenterEnd)
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .fillMaxWidth(0.8f)
-                                .background(Color.White)
-                        ) {
-                            FilterScreen()
+                        Text("Something went wrong", style = MaterialTheme.typography.bodyLarge)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(message, style = MaterialTheme.typography.bodySmall)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(onClick = { viewModel.searchRecipes(searchQuery) }) {
+                            Text("Retry")
                         }
+                    }
+                }
+
+                is SearchState.Success -> {
+                    val recipes = (searchState as SearchState.Success).results
+                    if (recipes.isEmpty()) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text("No recipes found.", style = MaterialTheme.typography.bodyLarge)
+                        }
+                    } else {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            contentPadding = PaddingValues(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            items(recipes) { recipe ->
+                                RecipeCard(
+                                    recipe = recipe,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(200.dp)
+                                        .clickable { onRecipeClick(recipe) }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 🎛️ Overlay + Sliding Filter
+        if (showFilter) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.4f))
+                        .clickable { showFilter = false }
+                )
+                AnimatedVisibility(
+                    visible = showFilter,
+                    enter = slideInHorizontally(
+                        initialOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(300)
+                    ),
+                    exit = slideOutHorizontally(
+                        targetOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(300)
+                    ),
+                    modifier = Modifier.align(Alignment.CenterEnd)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth(0.8f)
+                            .background(Color.White)
+                    ) {
+                        FilterScreen()
                     }
                 }
             }
         }
     }
 }
-

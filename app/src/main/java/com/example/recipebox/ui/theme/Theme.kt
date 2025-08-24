@@ -1,6 +1,5 @@
 package com.example.recipebox.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -12,53 +11,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = PrimaryDark,
-    onPrimary = White,
-    primaryContainer = PrimaryBaseDark,
-    onPrimaryContainer = PrimaryLight,
-    secondary = SecondaryDark,
-    onSecondary = White,
-    secondaryContainer = SecondaryBaseDark,
-    onSecondaryContainer = SecondaryLight,
-    tertiary = TertiaryDark,
-    onTertiary = Black,
-    tertiaryContainer = TertiaryBaseDark,
-    onTertiaryContainer = TertiaryLight,
-    background = PrimaryBaseDarkest,
-    onBackground = White,
-    surface = PrimaryBaseDarker,
-    onSurface = White,
-    surfaceVariant = DarkGray,
-    onSurfaceVariant = LightGray,
-    error = Error,
-    onError = White,
-    errorContainer = ErrorLight,
-    onErrorContainer = Black
+    primary = Purple80,
+    secondary = PurpleGrey80,
+    tertiary = Pink80
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = PrimaryBase,
-    onPrimary = White,
-    primaryContainer = PrimaryLight,
-    onPrimaryContainer = PrimaryBaseDarkest,
-    secondary = SecondaryBase,
-    onSecondary = White,
-    secondaryContainer = SecondaryLight,
-    onSecondaryContainer = SecondaryBaseDarkest,
-    tertiary = TertiaryBase,
-    onTertiary = Black,
-    tertiaryContainer = TertiaryLight,
-    onTertiaryContainer = TertiaryBaseDarkest,
-    background = Background,
-    onBackground = Black,
-    surface = White,
-    onSurface = Black,
-    surfaceVariant = LighterGray,
-    onSurfaceVariant = DarkestGray,
-    error = Error,
-    onError = White,
-    errorContainer = ErrorLight,
-    onErrorContainer = Black
+    primary = Purple40,
+    secondary = PurpleGrey40,
+    tertiary = Pink40
+
+    /* Other default colors to override
+    background = Color(0xFFFFFBFE),
+    surface = Color(0xFFFFFBFE),
+    onPrimary = Color.White,
+    onSecondary = Color.White,
+    onTertiary = Color.White,
+    onBackground = Color(0xFF1C1B1F),
+    onSurface = Color(0xFF1C1B1F),
+    */
 )
 
 @Composable

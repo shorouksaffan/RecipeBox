@@ -29,30 +29,27 @@ import com.example.recipebox.ui.components.StepItem
 @Composable
 fun RecipeDetailScreen(
     recipeId: Long,
-    viewModel: RecipeDetailViewModel = hiltViewModel()
+    viewModel: RecipeViewModel = hiltViewModel()
 ) {
-    val recipe by viewModel.recipe.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val error by viewModel.error.collectAsState()
+    val recipe by viewModel.recipeState.collectAsState()
 
     LaunchedEffect(recipeId) {
-        viewModel.loadRecipe(recipeId)
+        viewModel.getRecipeById(recipeId)
     }
 
-    when {
-        isLoading -> {
+    when(recipe) {
+        is RecipeState.Error -> {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                Text("An error occurred: ${(recipe as RecipeState.Error).error}")
             }
         }
-        error != null -> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = error ?: "Unknown error", color = Color.Red)
-            }
+        RecipeState.Loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
         }
-        recipe != null -> {
-            RecipeDetailContent(recipe = recipe!!)
-        }
+        is RecipeState.Success -> {
+            val recipe = (recipe as RecipeState.Success).recipe
+            RecipeDetailContent(recipe = recipe)}
+
     }
 }
 
@@ -161,7 +158,6 @@ fun RecipeDetailContent(recipe: Recipe) {
 @Composable
 fun PreviewRecipeDetailContent() {
     val fakeRecipe = Recipe(
-        id = 1,
         title = "Perfect homemade pancake",
         imageUri = null, // preview won’t load remote images
         ingredients = listOf(

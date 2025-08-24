@@ -33,5 +33,5 @@ interface RecipeDao {
     WHERE cr.collectionId = :collectionId
     ORDER BY r.id ASC LIMIT 1
 """)
-    suspend fun getFirstRecipeImageInCollection(collectionId: Long): String?
+    suspend fun getFirstRecipeImageInCollection(collectionId: Long): String
 }

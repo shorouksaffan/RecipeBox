@@ -29,7 +29,7 @@ class RecipeRepositoryImpl @Inject constructor(
     override suspend fun getRecipeById(id: Long): Recipe {
         return recipeDao.getRecipeById(id).toDomain()
     }
-    override suspend fun getFirstRecipeImageInCollection(collectionId: Long): String? {
+    override suspend fun getFirstRecipeImageInCollection(collectionId: Long): String {
         return recipeDao.getFirstRecipeImageInCollection(collectionId)
     }
 

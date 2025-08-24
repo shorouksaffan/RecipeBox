@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.recipebox.R
+import com.example.recipebox.domain.model.Collection
 import com.example.recipebox.ui.components.CollectionCard
 import com.example.recipebox.ui.components.NavBar
 
@@ -25,10 +27,10 @@ import com.example.recipebox.ui.components.NavBar
 fun SavedScreen(
     onBackClick: () -> Unit,
     onAddClick: () -> Unit,
-    onPreviewClick: (CollectionItem) -> Unit,
+    onPreviewClick: (Collection) -> Unit,
     viewModel: SavedViewModel = hiltViewModel()
 ) {
-    val collections by viewModel.collections.collectAsState()
+    val collections by viewModel.savedState.collectAsState()
     var selectedItem = "save" // ✅ default for this screen
 
     Scaffold(
@@ -71,19 +73,66 @@ fun SavedScreen(
             )
         }
     ) { innerPadding ->
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(12.dp),
-            modifier = Modifier.padding(innerPadding),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(collections) { item ->
-                CollectionCard(
-                    title = item.title,
-                    imageUri = item.imageUrl,
-                    onPreviewClick = { onPreviewClick(item) }
-                )
+        when (collections) {
+            is SavedState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            is SavedState.Error -> {
+                val message = (collections as SavedState.Error).error
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = "Failed to load collections", style = MaterialTheme.typography.bodyLarge)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = message, style = MaterialTheme.typography.bodySmall)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = { viewModel.getCollections() }) {
+                        Text("Retry")
+                    }
+                }
+            }
+
+            is SavedState.Success -> {
+                val collections = (collections as SavedState.Success).collections
+                if (collections.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = "No saved collections yet.", style = MaterialTheme.typography.bodyLarge)
+                    }
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(12.dp),
+                        modifier = Modifier.padding(innerPadding),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(collections) { item ->
+                            CollectionCard(
+                                title = item.name,
+                                imageUri = item.imageUrl ?: "",
+                                onPreviewClick = { onPreviewClick(item) }
+                            )
+                        }
+                    }
+                }
             }
         }
     }

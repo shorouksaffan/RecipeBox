@@ -26,12 +26,4 @@ interface RecipeDao {
 
     @Query("SELECT * FROM recipes WHERE :tag IN (tags)")
     fun filterByTag(tag: String): Flow<List<RecipeEntity>>
-
-    @Query("""
-    SELECT r.imageUri FROM recipes r
-    INNER JOIN CollectionRecipeCrossRefEntity cr ON r.id = cr.recipeId
-    WHERE cr.collectionId = :collectionId
-    ORDER BY r.id ASC LIMIT 1
-""")
-    suspend fun getFirstRecipeImageInCollection(collectionId: Long): String?
 }

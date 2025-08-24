@@ -9,42 +9,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.recipebox.core.utils.navigation.AppNavigation
-import com.example.recipebox.core.utils.navigation.BottomNavigationBar
-import com.example.recipebox.core.utils.navigation.Navigation
-import com.example.recipebox.ui.components.NavBar
 import com.example.recipebox.ui.theme.RecipeBoxTheme
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             RecipeBoxTheme {
-                val navController = rememberNavController()
-
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    bottomBar = {
-                        val navBackStackEntry by navController.currentBackStackEntryAsState()
-                        val currentRoute = navBackStackEntry?.destination?.route
-                        if (currentRoute != Navigation.OnboardingScreen.route) {
-//                            BottomNavigationBar(navController = navController)
-                            NavBar("search",{
-
-                            })
-                        }
-                    }
-                ) { innerPadding ->
-                    AppNavigation(
-                        navController = navController,
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Greeting(
+                        name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

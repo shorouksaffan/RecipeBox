@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.ui.graphics)
     implementation(libs.material3)
+    implementation(libs.androidx.animation)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

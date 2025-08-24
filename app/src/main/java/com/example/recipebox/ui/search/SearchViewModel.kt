@@ -3,47 +3,35 @@ package com.example.recipebox.ui.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipebox.domain.model.Recipe
-import com.example.recipebox.domain.usecase.GetRecipesUseCase
 import com.example.recipebox.domain.usecase.SearchRecipesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+sealed class SearchState {
+    object Loading : SearchState()
+    data class Success(val results: List<Recipe>) : SearchState()
+    data class Error(val message: String) : SearchState()
+}
+
 @HiltViewModel
-class SearchViewModel @Inject constructor(
-    private val getRecipesUseCase: GetRecipesUseCase,
-    private val searchRecipesUseCase: SearchRecipesUseCase
-) : ViewModel() {
+class SearchViewModel @Inject constructor(private val searchRecipesUseCase: SearchRecipesUseCase) :
+    ViewModel() {
+    private val _searchState = MutableStateFlow<SearchState>(SearchState.Loading)
+    val searchState: StateFlow<SearchState> = _searchState
 
-    private val _query = MutableStateFlow("")
-    val query: StateFlow<String> = _query.asStateFlow()
-
-    private val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
-    val recipes: StateFlow<List<Recipe>> = _recipes.asStateFlow()
-
-    init {
-        // Load all recipes initially
+    fun searchRecipes(query: String) {
         viewModelScope.launch {
-            getRecipesUseCase().collect { list ->
-                _recipes.value = list
-            }
-        }
-    }
-
-    fun updateQuery(newQuery: String) {
-        _query.value = newQuery
-
-        viewModelScope.launch {
-            if (newQuery.isBlank()) {
-                getRecipesUseCase().collect { list ->
-                    _recipes.value = list
-                }
-            } else {
-                searchRecipesUseCase(newQuery).collect { list ->
-                    _recipes.value = list
-                }
+            _searchState.value = SearchState.Loading
+            try {
+                searchRecipesUseCase(query)
+                    .collect { recipes ->
+                        _searchState.value = SearchState.Success(recipes)
+                    }
+            } catch (e: Exception) {
+                _searchState.value = SearchState.Error("Search failed: ${e.message}")
             }
         }
     }

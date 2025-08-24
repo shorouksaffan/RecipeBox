@@ -4,7 +4,6 @@ import com.example.recipebox.data.local.entities.RecipeEntity
 import com.example.recipebox.domain.model.Recipe
 
 fun RecipeEntity.toDomain() = Recipe(
-    id = id,
     title = title,
     imageUri = imageUri,
     ingredients = ingredients,
@@ -13,7 +12,6 @@ fun RecipeEntity.toDomain() = Recipe(
 )
 
 fun Recipe.toEntity() = RecipeEntity(
-    id = id,
     title = title,
     imageUri = imageUri,
     ingredients = ingredients,

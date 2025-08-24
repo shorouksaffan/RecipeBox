@@ -26,8 +26,8 @@ class RecipeRepositoryImpl @Inject constructor(
         recipeDao.update(recipe.toEntity())
     }
 
-    override suspend fun getRecipeById(id: Long): Recipe? {
-        return recipeDao.getRecipeById(id)?.toDomain()
+    override suspend fun getRecipeById(id: Long): Recipe {
+        return recipeDao.getRecipeById(id).toDomain()
     }
     override suspend fun getFirstRecipeImageInCollection(collectionId: Long): String? {
         return recipeDao.getFirstRecipeImageInCollection(collectionId)

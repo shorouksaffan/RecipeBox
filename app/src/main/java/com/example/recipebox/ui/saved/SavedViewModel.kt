@@ -2,44 +2,36 @@ package com.example.recipebox.ui.saved
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.recipebox.domain.model.Collection
+import com.example.recipebox.domain.repository.CollectionRepository
 import com.example.recipebox.domain.usecase.GetCollectionUseCase
-import com.example.recipebox.domain.usecase.GetCollectionImageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class CollectionItem(
-    val id: Long,
-    val title: String,
-    val imageUrl: String
-)
+sealed class SavedState {
+    object Loading : SavedState()
+    data class Success(val collections: List<Collection>) : SavedState()
+    data class Error(val error: String) : SavedState()
+}
 
 @HiltViewModel
-class SavedViewModel @Inject constructor(
-    private val getCollectionUseCase: GetCollectionUseCase,
-    private val getCollectionImageUseCase: GetCollectionImageUseCase
+class SavedViewModel @Inject constructor(private val getCollectionUseCase: GetCollectionUseCase
 ) : ViewModel() {
+    private val _savedState = MutableStateFlow<SavedState>(SavedState.Loading)
+    val savedState: StateFlow<SavedState> = _savedState
 
-    private val _collections = MutableStateFlow<List<CollectionItem>>(emptyList())
-    val collections: StateFlow<List<CollectionItem>> = _collections.asStateFlow()
-
-    init {
-        loadCollections()
-    }
-
-    private fun loadCollections() {
+    fun getCollections() {
         viewModelScope.launch {
-            getCollectionUseCase().collect { list ->
-                val items = list.map { collection ->
-                    val imageUrl = getCollectionImageUseCase(collection.id) ?: ""
-                    CollectionItem(
-                        id = collection.id,
-                        title = collection.name,
-                        imageUrl = imageUrl
-                    )
+            _savedState.value = SavedState.Loading
+            try {
+                getCollectionUseCase().collect { collections ->
+                    _savedState.value = SavedState.Success(collections)
                 }
-                _collections.value = items
+            } catch (e: Exception) {
+                _savedState.value = SavedState.Error("Failed to load collections: ${e.message}")
             }
         }
     }

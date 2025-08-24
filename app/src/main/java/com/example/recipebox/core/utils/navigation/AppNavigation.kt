@@ -39,7 +39,7 @@ fun AppNavigation(
             CollectionDetailScreen()
         }
         composable(Navigation.SavedScreen.route) {
-             SavedScreen()
+//             SavedScreen()
         }
         composable(Navigation.SplashScreen.route) {
             SplashScreen({

@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.hilt.android)
+    implementation(libs.ui.graphics)
+    implementation(libs.material3)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

@@ -174,10 +174,3 @@ fun SearchScreen(
     }
 }
 
-@Preview
-@Composable
-fun test() {
-    SearchScreen({
-
-    })
-}

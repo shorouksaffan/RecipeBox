@@ -3,7 +3,7 @@ package com.example.recipebox.ui.recipe
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipebox.domain.model.Recipe
-import com.example.recipebox.domain.usecase.GetRecipeById
+import com.example.recipebox.domain.usecase.GetRecipeByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecipeDetailViewModel @Inject constructor(
-    private val getRecipeById: GetRecipeById
+    private val getRecipeByIdUseCase: GetRecipeByIdUseCase
 ) : ViewModel() {
 
     private val _recipe = MutableStateFlow<Recipe?>(null)
@@ -29,7 +29,7 @@ class RecipeDetailViewModel @Inject constructor(
             try {
                 _isLoading.value = true
                 _error.value = null
-                val result = getRecipeById(id)
+                val result = getRecipeByIdUseCase(id)
                 _recipe.value = result
             } catch (e: Exception) {
                 _error.value = e.message ?: "Unknown error"

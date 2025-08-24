@@ -51,7 +51,7 @@ fun AppNavigation(
             AddRecipeScreen()
         }
         composable(Navigation.SearchScreen.route) {
-            SearchScreen()
+//            SearchScreen()
         }
         composable(Navigation.CollectionsScreen.route) {
             CollectionsScreen()

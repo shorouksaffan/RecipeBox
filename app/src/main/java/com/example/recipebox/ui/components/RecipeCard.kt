@@ -1,6 +1,7 @@
 package com.example.recipebox.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -20,12 +21,12 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.recipebox.domain.model.Recipe
 import com.example.recipebox.R
-
 @Composable
 fun RecipeCard(
     recipe: Recipe,
     rating: Double = 0.0,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSaveClick: () -> Unit = {}
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -43,6 +44,7 @@ fun RecipeCard(
                 modifier = Modifier.fillMaxSize()
             )
 
+            // Rating (Top Start)
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -68,6 +70,20 @@ fun RecipeCard(
                 )
             }
 
+            // Save Icon (Top End)
+            // RecipeCard.kt
+            Icon(
+                painter = painterResource(id = R.drawable.archive), // replace with your archive icon
+                contentDescription = "Save",
+                tint = Color.Gray,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(8.dp)
+                    .size(22.dp)
+                    .clickable { onSaveClick() } // 👈 trigger callback
+            )
+
+
             // Title (Bottom)
             Box(
                 modifier = Modifier
@@ -86,4 +102,3 @@ fun RecipeCard(
         }
     }
 }
-

@@ -36,7 +36,7 @@ fun AppNavigation(
             StepsScreen()
         }
         composable(Navigation.CollectionDetailScreen.route) {
-            CollectionDetailScreen()
+//            CollectionDetailScreen()
         }
         composable(Navigation.SavedScreen.route) {
 //             SavedScreen()

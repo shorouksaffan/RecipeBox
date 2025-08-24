@@ -7,8 +7,9 @@ import com.example.recipebox.domain.model.Recipe
 import com.example.recipebox.domain.repository.RecipeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class RecipeRepositoryImpl(
+class RecipeRepositoryImpl @Inject constructor(
     private val recipeDao: RecipeDao
 ) : RecipeRepository {
     override fun getAllRecipes(): Flow<List<Recipe>> =
@@ -27,6 +28,9 @@ class RecipeRepositoryImpl(
 
     override suspend fun getRecipeById(id: Long): Recipe? {
         return recipeDao.getRecipeById(id)?.toDomain()
+    }
+    override suspend fun getFirstRecipeImageInCollection(collectionId: Long): String? {
+        return recipeDao.getFirstRecipeImageInCollection(collectionId)
     }
 
     override fun searchRecipes(query: String): Flow<List<Recipe>> =

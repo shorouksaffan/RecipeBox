@@ -1,5 +1,8 @@
 package com.example.recipebox.ui.components
 
+import androidx.compose.material3.Icon
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
@@ -12,9 +15,13 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.recipebox.R
 
 @Composable
 fun NavBar(
@@ -50,8 +57,13 @@ fun NavBar(
             )
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Add, contentDescription = "Add New") },
-            label = { Text("Add New") },
+            icon = { Icon(
+                painter = painterResource(id = R.drawable.add_circle),
+                contentDescription = "Filter Icon",
+                tint = Color.White,
+                modifier = Modifier.size(24.dp)
+            ) },
+            label = { Text("Add New\n Recipe", fontSize = 8.sp) },
             selected = selectedItem == "add",
             onClick = { onItemSelected("add") },
             colors = NavigationBarItemDefaults.colors(
@@ -62,7 +74,12 @@ fun NavBar(
             )
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.AddCircle, contentDescription = "Save") },
+            icon = { Icon(
+                painter = painterResource(id = R.drawable.archive),
+                contentDescription = "Save Icon",
+                tint = Color.White,
+                modifier = Modifier.size(28.dp)
+            ) },
             label = { Text("Save") },
             selected = selectedItem == "save",
             onClick = { onItemSelected("save") },

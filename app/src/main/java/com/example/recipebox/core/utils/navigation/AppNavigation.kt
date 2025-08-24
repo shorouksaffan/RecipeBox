@@ -42,7 +42,9 @@ fun AppNavigation(
              SavedScreen()
         }
         composable(Navigation.SplashScreen.route) {
-            SplashScreen()
+            SplashScreen({
+
+            })
         }
         composable(Navigation.OnboardingScreen.route) {
             OnboardingScreen()

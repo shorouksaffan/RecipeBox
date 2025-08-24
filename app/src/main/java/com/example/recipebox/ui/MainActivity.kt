@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.recipebox.core.utils.navigation.AppNavigation
 import com.example.recipebox.core.utils.navigation.BottomNavigationBar
 import com.example.recipebox.core.utils.navigation.Navigation
+import com.example.recipebox.ui.components.NavBar
 import com.example.recipebox.ui.theme.RecipeBoxTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +36,10 @@ class MainActivity : ComponentActivity() {
                         val navBackStackEntry by navController.currentBackStackEntryAsState()
                         val currentRoute = navBackStackEntry?.destination?.route
                         if (currentRoute != Navigation.OnboardingScreen.route) {
-                            BottomNavigationBar(navController = navController)
+//                            BottomNavigationBar(navController = navController)
+                            NavBar("search",{
+
+                            })
                         }
                     }
                 ) { innerPadding ->

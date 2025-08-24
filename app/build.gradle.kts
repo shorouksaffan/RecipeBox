@@ -42,9 +42,9 @@ android {
 }
 
 dependencies {
-    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("io.coil-kt:coil-compose:2.7.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
-
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

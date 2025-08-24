@@ -29,6 +29,9 @@ class RecipeRepositoryImpl @Inject constructor(
     override suspend fun getRecipeById(id: Long): Recipe {
         return recipeDao.getRecipeById(id).toDomain()
     }
+    override suspend fun getFirstRecipeImageInCollection(collectionId: Long): String? {
+        return recipeDao.getFirstRecipeImageInCollection(collectionId)
+    }
 
     override fun searchRecipes(query: String): Flow<List<Recipe>> =
         recipeDao.searchRecipesByTitle(query).map { list -> list.map { it.toDomain() } }

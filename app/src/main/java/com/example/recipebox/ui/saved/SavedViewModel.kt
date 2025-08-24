@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipebox.domain.model.Collection
 import com.example.recipebox.domain.repository.CollectionRepository
+import com.example.recipebox.domain.usecase.GetCollectionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +18,8 @@ sealed class SavedState {
 }
 
 @HiltViewModel
-class SavedViewModel @Inject constructor(private val repository: CollectionRepository) : ViewModel() {
+class SavedViewModel @Inject constructor(private val getCollectionUseCase: GetCollectionUseCase
+) : ViewModel() {
     private val _savedState = MutableStateFlow<SavedState>(SavedState.Loading)
     val savedState: StateFlow<SavedState> = _savedState
 
@@ -25,7 +27,7 @@ class SavedViewModel @Inject constructor(private val repository: CollectionRepos
         viewModelScope.launch {
             _savedState.value = SavedState.Loading
             try {
-                repository.getAllCollections().collect { collections ->
+                getCollectionUseCase().collect { collections ->
                     _savedState.value = SavedState.Success(collections)
                 }
             } catch (e: Exception) {

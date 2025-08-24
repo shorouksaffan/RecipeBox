@@ -10,4 +10,5 @@ interface RecipeRepository {
     suspend fun updateRecipe(recipe: Recipe)
     suspend fun deleteRecipe(recipe: Recipe)
     suspend fun getRecipeById(id: Long): Recipe
+    suspend fun getFirstRecipeImageInCollection(collectionId: Long): String
 }

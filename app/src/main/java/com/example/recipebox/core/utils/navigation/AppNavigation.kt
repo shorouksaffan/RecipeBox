@@ -36,13 +36,15 @@ fun AppNavigation(
             StepsScreen()
         }
         composable(Navigation.CollectionDetailScreen.route) {
-            CollectionDetailScreen()
+//            CollectionDetailScreen()
         }
         composable(Navigation.SavedScreen.route) {
-             SavedScreen()
+//             SavedScreen()
         }
         composable(Navigation.SplashScreen.route) {
-            SplashScreen()
+            SplashScreen({
+
+            })
         }
         composable(Navigation.OnboardingScreen.route) {
             OnboardingScreen()
@@ -51,7 +53,9 @@ fun AppNavigation(
             AddRecipeScreen()
         }
         composable(Navigation.SearchScreen.route) {
-            SearchScreen()
+            SearchScreen({
+
+            })
         }
         composable(Navigation.CollectionsScreen.route) {
             CollectionsScreen()

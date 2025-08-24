@@ -1,5 +1,6 @@
 package com.example.recipebox.ui.search
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import com.example.recipebox.R
 import com.example.recipebox.domain.model.Recipe
 import com.example.recipebox.ui.components.NavBar
@@ -32,12 +35,13 @@ import com.example.recipebox.ui.components.RecipeCard
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun SearchScreen(
-    recipes: List<Recipe>,
-    onRecipeClick: (Recipe) -> Unit
+    onRecipeClick: (Recipe) -> Unit,
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
-    var query by remember { mutableStateOf("") }
+    val query by viewModel.query.collectAsState()
+    val recipes by viewModel.recipes.collectAsState()
     var selectedTab by remember { mutableStateOf("search") }
-    var showFilter by remember { mutableStateOf(false) } // toggle filter screen
+    var showFilter by remember { mutableStateOf(false) }
 
     Scaffold(
         bottomBar = {
@@ -68,7 +72,7 @@ fun SearchScreen(
                 ) {
                     TextField(
                         value = query,
-                        onValueChange = { query = it },
+                        onValueChange = { viewModel.updateQuery(it) },
                         modifier = Modifier
                             .height(50.dp)
                             .weight(1f)
@@ -89,7 +93,7 @@ fun SearchScreen(
                         )
                     )
                     IconButton(
-                        onClick = { showFilter = true }, // Open filter panel
+                        onClick = { showFilter = true },
                         modifier = Modifier
                             .padding(4.dp)
                             .background(Color.Yellow, shape = RoundedCornerShape(8.dp))
@@ -124,6 +128,7 @@ fun SearchScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp)
+                                .clickable { onRecipeClick(recipe) }
                         )
                     }
                 }
@@ -138,26 +143,26 @@ fun SearchScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Color.Black.copy(alpha = 0.4f))
-                            .clickable { showFilter = false } // close when tapping outside
+                            .clickable { showFilter = false }
                     )
 
                     // Sliding Filter Panel
                     AnimatedVisibility(
                         visible = showFilter,
                         enter = slideInHorizontally(
-                            initialOffsetX = { fullWidth -> fullWidth }, // start off-screen RIGHT
+                            initialOffsetX = { fullWidth -> fullWidth },
                             animationSpec = tween(300)
                         ),
                         exit = slideOutHorizontally(
-                            targetOffsetX = { fullWidth -> fullWidth }, // slide back to RIGHT
+                            targetOffsetX = { fullWidth -> fullWidth },
                             animationSpec = tween(300)
                         ),
-                        modifier = Modifier.align(Alignment.CenterEnd) // 🔑 place at right edge
+                        modifier = Modifier.align(Alignment.CenterEnd)
                     ) {
                         Box(
                             modifier = Modifier
                                 .fillMaxHeight()
-                                .fillMaxWidth(0.8f) // 80% width
+                                .fillMaxWidth(0.8f)
                                 .background(Color.White)
                         ) {
                             FilterScreen()
@@ -165,28 +170,14 @@ fun SearchScreen(
                     }
                 }
             }
-
         }
     }
 }
 
-
 @Preview
 @Composable
 fun test() {
-    val sampleRecipes = List(6) {
-        Recipe(
-            id = it.toLong(),
-            title = "chocolate cake with buttercream frosting",
-            imageUri = "https://picsum.photos/300/300?random=$it",
-            ingredients = emptyList(),
-            steps = emptyList(),
-            tags = emptyList()
-        )
-    }
-    SearchScreen(
-        sampleRecipes,
-        {
+    SearchScreen({
 
-        })
+    })
 }

@@ -1,15 +1,19 @@
 package com.example.recipebox.ui.search
 
+import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,36 +25,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import com.example.recipebox.R
 import com.example.recipebox.domain.model.Recipe
 import com.example.recipebox.ui.components.NavBar
 import com.example.recipebox.ui.components.RecipeCard
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun SearchScreen(
-    recipes: List<Recipe>,
-    onRecipeClick: (Recipe) -> Unit
+    onRecipeClick: (Recipe) -> Unit,
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
-    var query by remember { mutableStateOf("") }
-    var selectedTab by remember { mutableStateOf("search") }
+    val searchState by viewModel.searchState.collectAsState()
+    var searchQuery by remember { mutableStateOf("") }
+    var showFilter by remember { mutableStateOf(false) }
 
-    Scaffold(
-        bottomBar = {
-            NavBar(
-                selectedItem = selectedTab,
-                onItemSelected = { selectedTab = it }
-            )
-        }
-    ) { paddingValues ->
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(Color.White)
+            modifier = Modifier.fillMaxSize()
         ) {
-
-            // Top Search Bar
+            // 🔍 Top Search Bar
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -59,8 +58,13 @@ fun SearchScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextField(
-                    value = query,
-                    onValueChange = { query = it },
+                    value = searchQuery,
+                    onValueChange = {
+                        searchQuery = it
+                        if (searchQuery.isNotBlank()) {
+                            viewModel.searchRecipes(searchQuery)
+                        }
+                    },
                     modifier = Modifier
                         .height(50.dp)
                         .weight(1f)
@@ -70,7 +74,7 @@ fun SearchScreen(
                             Icon(Icons.Default.Search, contentDescription = "Search", Modifier.size(22.dp))
                             Text("Search...", color = Color.Black, fontSize = 18.sp)
                         }
-                                  },
+                    },
                     singleLine = true,
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.White,
@@ -81,7 +85,7 @@ fun SearchScreen(
                     )
                 )
                 IconButton(
-                    onClick = { /* perform search */ },
+                    onClick = { showFilter = true },
                     modifier = Modifier
                         .padding(4.dp)
                         .background(Color.Yellow, shape = RoundedCornerShape(8.dp))
@@ -94,7 +98,7 @@ fun SearchScreen(
                 }
             }
 
-            // Section Header
+            // 📝 Section Header
             Text(
                 text = "Recipes",
                 fontSize = 18.sp,
@@ -102,43 +106,93 @@ fun SearchScreen(
                 modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 4.dp)
             )
 
-            // Recipes Grid
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(recipes) { recipe ->
-                    RecipeCard(
-                        recipe = recipe,
+            // 🔄 State Handling
+            when (searchState) {
+                is SearchState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                is SearchState.Error -> {
+                    val message = (searchState as SearchState.Error).message
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                    )
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("Something went wrong", style = MaterialTheme.typography.bodyLarge)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(message, style = MaterialTheme.typography.bodySmall)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(onClick = { viewModel.searchRecipes(searchQuery) }) {
+                            Text("Retry")
+                        }
+                    }
+                }
+
+                is SearchState.Success -> {
+                    val recipes = (searchState as SearchState.Success).results
+                    if (recipes.isEmpty()) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text("No recipes found.", style = MaterialTheme.typography.bodyLarge)
+                        }
+                    } else {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            contentPadding = PaddingValues(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            items(recipes) { recipe ->
+                                RecipeCard(
+                                    recipe = recipe,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(200.dp)
+                                        .clickable { onRecipeClick(recipe) }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 🎛️ Overlay + Sliding Filter
+        if (showFilter) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.4f))
+                        .clickable { showFilter = false }
+                )
+                AnimatedVisibility(
+                    visible = showFilter,
+                    enter = slideInHorizontally(
+                        initialOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(300)
+                    ),
+                    exit = slideOutHorizontally(
+                        targetOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(300)
+                    ),
+                    modifier = Modifier.align(Alignment.CenterEnd)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth(0.8f)
+                            .background(Color.White)
+                    ) {
+                        FilterScreen()
+                    }
                 }
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun test() {
-    val sampleRecipes = List(6) {
-        Recipe(
-            id = it.toLong(),
-            title = "chocolate cake with buttercream frosting",
-            imageUri = "https://picsum.photos/300/300?random=$it",
-            ingredients = emptyList(),
-            steps = emptyList(),
-            tags = emptyList()
-        )
-    }
-    SearchScreen(
-        sampleRecipes,
-        {
-
-        })
 }

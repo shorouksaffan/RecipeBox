@@ -16,7 +16,7 @@ interface RecipeDao {
     suspend fun delete(recipe: RecipeEntity)
 
     @Query("SELECT * FROM recipes WHERE id = :id")
-    suspend fun getRecipeById(id: Long): RecipeEntity?
+    suspend fun getRecipeById(id: Long): RecipeEntity
 
     @Query("SELECT * FROM recipes")
     fun getAllRecipes(): Flow<List<RecipeEntity>>
@@ -26,4 +26,12 @@ interface RecipeDao {
 
     @Query("SELECT * FROM recipes WHERE :tag IN (tags)")
     fun filterByTag(tag: String): Flow<List<RecipeEntity>>
+
+    @Query("""
+    SELECT r.imageUri FROM recipes r
+    INNER JOIN CollectionRecipeCrossRefEntity cr ON r.id = cr.recipeId
+    WHERE cr.collectionId = :collectionId
+    ORDER BY r.id ASC LIMIT 1
+""")
+    suspend fun getFirstRecipeImageInCollection(collectionId: Long): String
 }

@@ -7,29 +7,87 @@ import com.example.recipebox.domain.usecase.AddRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class AddRecipeState {
-    object Loading : AddRecipeState()
-    data class Success(val message: String) : AddRecipeState()
-    data class Error(val error: String) : AddRecipeState()
-}
-
 @HiltViewModel
-class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRecipeUseCase) : ViewModel() {
-    private val _addRecipeState = MutableStateFlow<AddRecipeState>(AddRecipeState.Loading)
-    val addRecipeState: StateFlow<AddRecipeState> = _addRecipeState
+class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRecipeUseCase) :
+    ViewModel() {
+    private val _addRecipeScreenState = MutableStateFlow(AddRecipeScreenState())
+    val addRecipeScreenState: StateFlow<AddRecipeScreenState> = _addRecipeScreenState
+
+    private fun updateState(newState: AddRecipeScreenState) {
+        _addRecipeScreenState.update { newState }
+    }
 
     fun addRecipe(recipe: Recipe) {
         viewModelScope.launch {
-            _addRecipeState.value = AddRecipeState.Loading
+            updateState(
+                addRecipeScreenState.value.copy(
+                    isLoading = true,
+                    error = null,
+                    addRecipeUiState = addRecipeScreenState.value.addRecipeUiState.copy(message = null)
+                )
+            )
             try {
                 addRecipeUseCase(recipe)
-                _addRecipeState.value = AddRecipeState.Success("Recipe added successfully")
+                updateState(
+                    addRecipeScreenState.value.copy(
+                        isLoading = false,
+                        error = null,
+                        addRecipeUiState = addRecipeScreenState.value.addRecipeUiState.copy(
+                            message = "Recipe added successfully"
+                        )
+                    )
+                )
             } catch (e: Exception) {
-                _addRecipeState.value = AddRecipeState.Error("Failed to add recipe: ${e.message}")
+                updateState(
+                    addRecipeScreenState.value.copy(
+                        isLoading = false,
+                        error = "Failed to add recipe: ${e.message}"
+                    )
+                )
             }
         }
+    }
+
+    fun onNextClick() {
+        val nextStep = when (addRecipeScreenState.value.addRecipeUiState.currentStep) {
+            AddRecipeStep.AddRecipeCover -> AddRecipeStep.PreviewRecipeCover
+            AddRecipeStep.PreviewRecipeCover -> AddRecipeStep.AddRecipeInfo
+            AddRecipeStep.AddRecipeInfo -> AddRecipeStep.AddIngredients
+            AddRecipeStep.AddIngredients -> AddRecipeStep.AddInstructions
+            AddRecipeStep.AddInstructions -> AddRecipeStep.AddInstructions
+        }
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(currentStep = nextStep)
+            )
+        }
+    }
+
+    fun onBackClick() {
+        val previousStep = when (addRecipeScreenState.value.addRecipeUiState.currentStep) {
+            AddRecipeStep.AddRecipeCover -> AddRecipeStep.AddRecipeCover
+            AddRecipeStep.PreviewRecipeCover -> AddRecipeStep.AddRecipeCover
+            AddRecipeStep.AddRecipeInfo -> AddRecipeStep.PreviewRecipeCover
+            AddRecipeStep.AddIngredients -> AddRecipeStep.AddRecipeInfo
+            AddRecipeStep.AddInstructions -> AddRecipeStep.AddIngredients
+        }
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(currentStep = previousStep)
+            )
+        }
+    }
+
+    fun onClearAllClick () {
+        // TODO: Implement clear all functionality
+    }
+
+    fun onSaveImageClick () {
+        //TODO: Implement save image functionality
+        onNextClick()
     }
 }

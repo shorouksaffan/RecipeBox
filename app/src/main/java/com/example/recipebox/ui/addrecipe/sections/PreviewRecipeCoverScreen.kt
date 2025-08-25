@@ -43,7 +43,7 @@ fun PreviewRecipeCoverScreen(
         },
         bottomBar = {
             Button(
-                onClick = viewModel::onSaveImageClick,
+                onClick = viewModel::onNextClick,
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(containerColor = Black),
                 modifier = Modifier.padding(12.dp).fillMaxWidth()

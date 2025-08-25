@@ -52,14 +52,14 @@ fun AddInstructionsScreen(
         },
         bottomBar = {
             Button(
-                onClick = viewModel::onNextClick,
+                onClick = viewModel::onSaveClick,
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(containerColor = Black),
                 modifier = Modifier
                     .padding(12.dp)
                     .fillMaxWidth()
             ) {
-                Text("Next", color = White)
+                Text("Save", color = White)
             }
         },
         modifier = Modifier.fillMaxSize(),

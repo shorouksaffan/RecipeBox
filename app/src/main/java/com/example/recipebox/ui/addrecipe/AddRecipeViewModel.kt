@@ -28,7 +28,6 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
                 addRecipeScreenState.value.copy(
                     isLoading = true,
                     error = null,
-                    addRecipeUiState = addRecipeScreenState.value.addRecipeUiState.copy(message = null)
                 )
             )
             try {
@@ -37,9 +36,7 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
                     addRecipeScreenState.value.copy(
                         isLoading = false,
                         error = null,
-                        addRecipeUiState = addRecipeScreenState.value.addRecipeUiState.copy(
-                            message = "Recipe added successfully"
-                        )
+                        addRecipeUiState = AddRecipeUiState()
                     )
                 )
             } catch (e: Exception) {
@@ -86,12 +83,11 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
     }
 
     fun onClearAllClick () {
-        // TODO: Implement clear all functionality
-    }
-
-    fun onSaveImageClick () {
-        //TODO: Implement save image functionality
-        onNextClick()
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = AddRecipeUiState()
+            )
+        }
     }
 
     fun onOpenAddIngredientDialog() {
@@ -218,6 +214,14 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
         }
     }
 
+    fun onHashtagsChange(hashtags: String) {
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(hashtags = hashtags)
+            )
+        }
+    }
+
     fun onDietaryTargetSelected(dietaryTarget: DietaryTarget) {
         val currentSelections = addRecipeScreenState.value.addRecipeUiState.selectedDietaryTargets.toMutableSet()
         if (currentSelections.contains(dietaryTarget)) {
@@ -247,5 +251,18 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
             )
         }
         onBackClick()
+    }
+
+    fun onSaveClick() {
+        val uiState = addRecipeScreenState.value.addRecipeUiState
+        val newRecipe = Recipe(
+            id = 0, // Assuming ID is auto-generated
+            title = uiState.recipeName,
+            imageUri = uiState.coverImageUri?.toString(),
+            ingredients = uiState.ingredients,
+            steps = uiState.instructions,
+            tags = uiState.hashtags.split(" ")
+        )
+        addRecipe(newRecipe)
     }
 }

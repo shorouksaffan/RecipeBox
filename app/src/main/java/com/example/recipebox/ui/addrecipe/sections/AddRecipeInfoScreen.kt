@@ -36,6 +36,7 @@ import com.example.recipebox.ui.addrecipe.components.TimeInputField
 import com.example.recipebox.ui.addrecipe.components.NewRecipeTopBar
 import com.example.recipebox.ui.components.progressInd_step1
 import com.example.recipebox.ui.theme.Black
+import com.example.recipebox.ui.theme.RecipeBoxTypography
 import com.example.recipebox.ui.theme.White
 
 @Composable
@@ -177,7 +178,23 @@ fun AddRecipeInfoScreen(
                 FormSection(
                     title = "Hashtags",
                     content = {
-                        Text(text = state.hashtags, color = White, fontSize = 14.sp)
+                        TextField(
+                            value = state.hashtags,
+                            onValueChange = viewModel::onHashtagsChange,
+                            modifier = Modifier.fillMaxWidth(),
+                            placeholder = { Text("Add hashtags", color = Color.Gray) },
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                disabledContainerColor = Color.Transparent,
+                                errorContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Gray,
+                                unfocusedIndicatorColor = Color.LightGray,
+                                cursorColor = White,
+                                focusedTextColor = White
+                            ),
+                            textStyle = RecipeBoxTypography.caption1
+                        )
                     }
                 )
             }

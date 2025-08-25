@@ -30,7 +30,7 @@ private val ChipBorder = Color(0xFFE1E1E1)
 private val ButtonBlack = Color(0xFF111111)
 
 @Composable
-fun Filterchep(
+fun Filterchip(
     modifier: Modifier = Modifier,
     onConfirm: (Int, String, List<String>) -> Unit = { _, _, _ -> },
     onClearAll: () -> Unit = {}
@@ -214,6 +214,6 @@ private fun SelectableChip(text: String, isSelected: Boolean, onClick: () -> Uni
 @Preview(showBackground = true, backgroundColor = 0xFFF5FAF0)
 private fun FilterchipPreview() {
     MaterialTheme {
-        Filterchep()
+        Filterchip()
     }
 }

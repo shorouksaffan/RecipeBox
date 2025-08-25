@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.example.recipebox.ui.theme.RecipeBoxTheme
 import com.example.recipebox.ui.theme.RecipeBoxTypography
+import com.example.recipebox.ui.theme.White
 
 @Composable
 fun NewRecipeTopBar(
@@ -37,13 +38,13 @@ fun NewRecipeTopBar(
         Icon(
             imageVector = Icons.AutoMirrored.Default.ArrowBackIos,
             contentDescription = "Back",
-            tint = MaterialTheme.colorScheme.onBackground,
+            tint = White,
             modifier = Modifier.clickable(onClick = onClickBack)
         )
         Text(
             text = "Add New Recipe",
             style = RecipeBoxTypography.h6,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = White,
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 16.dp)
@@ -51,7 +52,7 @@ fun NewRecipeTopBar(
         Text(
             text = "Clear All",
             style = RecipeBoxTypography.body3,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = White,
             modifier = Modifier.clickable(onClick = onClickClearAll)
         )
     }

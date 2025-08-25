@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.recipebox.ui.theme.Info
 import com.example.recipebox.ui.theme.RecipeBoxTheme
 import com.example.recipebox.ui.theme.RecipeBoxTypography
+import com.example.recipebox.ui.theme.White
 
 @Composable
 fun AddRecipeCoverTobBar(
@@ -31,7 +32,7 @@ fun AddRecipeCoverTobBar(
         Text(
             text = "Add New Recipe",
             style = RecipeBoxTypography.h6,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = White,
             modifier = Modifier.weight(1f)
         )
         Text(

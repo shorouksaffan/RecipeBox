@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.example.recipebox.ui.addrecipe.AddRecipeUiState
 import com.example.recipebox.ui.addrecipe.AddRecipeViewModel
 import com.example.recipebox.ui.theme.Black
+import com.example.recipebox.ui.theme.White
 
 @Composable
 fun AddRecipeInfoScreen(
@@ -46,7 +47,7 @@ fun AddRecipeInfoScreen(
                 colors = ButtonDefaults.buttonColors(containerColor = Black),
                 modifier = Modifier.padding(12.dp).fillMaxWidth()
             ) {
-                Text("Next", color = MaterialTheme.colorScheme.onBackground)
+                Text("Next", color = White)
             }
         }
     }

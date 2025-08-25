@@ -1,5 +1,7 @@
 package com.example.recipebox.ui.addrecipe
 
+import android.net.Uri
+
 
 data class AddRecipeScreenState(
     val isLoading: Boolean = false,
@@ -15,6 +17,7 @@ data class AddRecipeUiState(
     val instructions: List<String> = emptyList(),
     val showAddInstructionDialog: Boolean = false,
 
+    val coverImageUri: Uri? = null,
     val recipeName: String = "",
     val servingCount: Int = 4,
     val cookTimeHours: String = "",

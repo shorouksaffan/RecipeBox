@@ -1,5 +1,6 @@
 package com.example.recipebox.ui.addrecipe
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipebox.domain.model.Recipe
@@ -227,6 +228,14 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
         _addRecipeScreenState.update {
             it.copy(
                 addRecipeUiState = it.addRecipeUiState.copy(selectedDietaryTargets = currentSelections)
+            )
+        }
+    }
+
+    fun onCoverImageSelected(coverImageUri: Uri) {
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(coverImageUri = coverImageUri)
             )
         }
     }

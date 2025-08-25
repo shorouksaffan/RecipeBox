@@ -27,7 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.recipebox.ui.addrecipe.AddRecipeUiState
 import com.example.recipebox.ui.addrecipe.AddRecipeViewModel
-import com.example.recipebox.ui.addrecipe.ChipMultiSelector
+import com.example.recipebox.ui.addrecipe.components.ChipMultiSelector
 import com.example.recipebox.ui.addrecipe.components.ChipSelector
 import com.example.recipebox.ui.addrecipe.components.FormSection
 import com.example.recipebox.ui.addrecipe.components.ServingCounter

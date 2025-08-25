@@ -92,4 +92,33 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
         //TODO: Implement save image functionality
         onNextClick()
     }
+
+    fun onOpenAddIngredientDialog() {
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(showAddDialog = true)
+            )
+        }
+    }
+
+    fun onCloseAddIngredientDialog() {
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(showAddDialog = false)
+            )
+        }
+    }
+
+    fun onAddIngredient(ingredient: String) {
+        val trimmedIngredient = ingredient.trim()
+        if (trimmedIngredient.isNotBlank()) {
+            val currentIngredients = addRecipeScreenState.value.addRecipeUiState.ingredients.toMutableList()
+            currentIngredients.add(trimmedIngredient)
+            _addRecipeScreenState.update {
+                it.copy(
+                    addRecipeUiState = it.addRecipeUiState.copy(ingredients = currentIngredients, showAddDialog = false)
+                )
+            }
+        }
+    }
 }

@@ -10,6 +10,8 @@ data class AddRecipeScreenState(
 data class AddRecipeUiState(
     val currentStep : AddRecipeStep = AddRecipeStep.AddRecipeCover,
     val message: String? = null,
+    val ingredients: List<String> = emptyList(),
+    val showAddDialog : Boolean = false,
     // add all the states here
 )
 

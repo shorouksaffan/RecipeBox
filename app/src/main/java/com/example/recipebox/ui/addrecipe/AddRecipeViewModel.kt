@@ -58,7 +58,8 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
             AddRecipeStep.PreviewRecipeCover -> AddRecipeStep.AddRecipeInfo
             AddRecipeStep.AddRecipeInfo -> AddRecipeStep.AddIngredients
             AddRecipeStep.AddIngredients -> AddRecipeStep.AddInstructions
-            AddRecipeStep.AddInstructions -> AddRecipeStep.AddInstructions
+            AddRecipeStep.AddInstructions -> AddRecipeStep.RecipeIntroductionPreview
+            AddRecipeStep.RecipeIntroductionPreview -> AddRecipeStep.RecipeIntroductionPreview
         }
         _addRecipeScreenState.update {
             it.copy(
@@ -74,6 +75,7 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
             AddRecipeStep.AddRecipeInfo -> AddRecipeStep.PreviewRecipeCover
             AddRecipeStep.AddIngredients -> AddRecipeStep.AddRecipeInfo
             AddRecipeStep.AddInstructions -> AddRecipeStep.AddIngredients
+            AddRecipeStep.RecipeIntroductionPreview -> AddRecipeStep.AddInstructions
         }
         _addRecipeScreenState.update {
             it.copy(

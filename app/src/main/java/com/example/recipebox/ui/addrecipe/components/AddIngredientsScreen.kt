@@ -41,12 +41,12 @@ fun AddIngredientsScreen(
         ) {
             Text("Add Ingredients Screen")
             Button(
-                onClick = viewModel::onSaveImageClick,
+                onClick = viewModel::onNextClick,
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(containerColor = Black),
                 modifier = Modifier.padding(12.dp).fillMaxWidth()
             ) {
-                Text("Save", color = MaterialTheme.colorScheme.onBackground)
+                Text("Next", color = MaterialTheme.colorScheme.onBackground)
             }
         }
     }

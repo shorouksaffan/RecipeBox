@@ -13,5 +13,6 @@ fun AddRecipeScreenSuccessContent(state: AddRecipeUiState, viewModel: AddRecipeV
         AddRecipeStep.AddRecipeInfo -> AddRecipeInfoScreen(state, viewModel)
         AddRecipeStep.AddIngredients -> AddIngredientsScreen(state, viewModel)
         AddRecipeStep.AddInstructions -> AddInstructionsScreen(state, viewModel)
+        AddRecipeStep.RecipeIntroductionPreview -> RecipeIntroductionPreviewScreen(state, viewModel)
     }
 }

@@ -239,4 +239,13 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
             )
         }
     }
+
+    fun onRemoveImageClick() {
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(coverImageUri = null)
+            )
+        }
+        onBackClick()
+    }
 }

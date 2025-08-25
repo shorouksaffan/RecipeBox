@@ -11,7 +11,9 @@ data class AddRecipeUiState(
     val currentStep : AddRecipeStep = AddRecipeStep.AddRecipeCover,
     val message: String? = null,
     val ingredients: List<String> = emptyList(),
-    val showAddDialog : Boolean = false,
+    val showAddIngredientDialog : Boolean = false,
+    val instructions: List<String> = emptyList(),
+    val showAddInstructionDialog : Boolean = false,
 )
 
 enum class AddRecipeStep {

@@ -96,7 +96,7 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
     fun onOpenAddIngredientDialog() {
         _addRecipeScreenState.update {
             it.copy(
-                addRecipeUiState = it.addRecipeUiState.copy(showAddDialog = true)
+                addRecipeUiState = it.addRecipeUiState.copy(showAddIngredientDialog = true)
             )
         }
     }
@@ -104,7 +104,7 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
     fun onCloseAddIngredientDialog() {
         _addRecipeScreenState.update {
             it.copy(
-                addRecipeUiState = it.addRecipeUiState.copy(showAddDialog = false)
+                addRecipeUiState = it.addRecipeUiState.copy(showAddIngredientDialog = false)
             )
         }
     }
@@ -116,7 +116,36 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
             currentIngredients.add(trimmedIngredient)
             _addRecipeScreenState.update {
                 it.copy(
-                    addRecipeUiState = it.addRecipeUiState.copy(ingredients = currentIngredients, showAddDialog = false)
+                    addRecipeUiState = it.addRecipeUiState.copy(ingredients = currentIngredients, showAddIngredientDialog = false)
+                )
+            }
+        }
+    }
+
+    fun onOpenAddInstructionDialog() {
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(showAddInstructionDialog = true)
+            )
+        }
+    }
+
+    fun onCloseAddInstructionDialog() {
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(showAddInstructionDialog = false)
+            )
+        }
+    }
+
+    fun onAddInstruction(instruction: String) {
+        val trimmedInstruction = instruction.trim()
+        if (trimmedInstruction.isNotBlank()) {
+            val currentInstructions = addRecipeScreenState.value.addRecipeUiState.instructions.toMutableList()
+            currentInstructions.add(trimmedInstruction)
+            _addRecipeScreenState.update {
+                it.copy(
+                    addRecipeUiState = it.addRecipeUiState.copy(instructions = currentInstructions, showAddInstructionDialog = false)
                 )
             }
         }

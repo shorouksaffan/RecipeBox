@@ -64,7 +64,7 @@ fun AddIngredientsScreen(
         contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background,
     ) { paddingValues ->
-        if (state.showAddDialog) {
+        if (state.showAddIngredientDialog) {
             AddIngredientDialog(
                 onDismiss = viewModel::onCloseAddIngredientDialog,
                 onConfirm = viewModel::onAddIngredient

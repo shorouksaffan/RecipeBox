@@ -1,4 +1,4 @@
-package com.example.recipebox.ui.addrecipe.components
+package com.example.recipebox.ui.addrecipe.sections
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.recipebox.ui.addrecipe.AddRecipeUiState
 import com.example.recipebox.ui.addrecipe.AddRecipeViewModel
+import com.example.recipebox.ui.addrecipe.components.AddRecipeCoverTobBar
 
 @Composable
 fun AddRecipeCoverScreen(state: AddRecipeUiState, viewModel: AddRecipeViewModel) {

@@ -1,4 +1,4 @@
-package com.example.recipebox.ui.addrecipe.components
+package com.example.recipebox.ui.addrecipe.sections
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

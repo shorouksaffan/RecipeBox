@@ -1,4 +1,4 @@
-package com.example.recipebox.ui.addrecipe.components
+package com.example.recipebox.ui.addrecipe.sections
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,6 +30,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.recipebox.ui.addrecipe.AddRecipeUiState
 import com.example.recipebox.ui.addrecipe.AddRecipeViewModel
+import com.example.recipebox.ui.addrecipe.components.AddIngredientDialog
+import com.example.recipebox.ui.addrecipe.components.IngredientRow
+import com.example.recipebox.ui.addrecipe.components.NewRecipeTopBar
 import com.example.recipebox.ui.components.progressInd_step2
 import com.example.recipebox.ui.theme.Black
 import com.example.recipebox.ui.theme.DarkGray

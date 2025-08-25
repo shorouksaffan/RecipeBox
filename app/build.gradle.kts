@@ -68,4 +68,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
+    implementation("androidx.compose.material3:material3:1.3.1")
+    implementation("io.coil-kt:coil-compose:2.6.0") // load URIs/Bitmaps easily
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
 }

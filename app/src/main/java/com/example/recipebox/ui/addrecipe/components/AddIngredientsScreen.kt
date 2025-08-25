@@ -31,6 +31,16 @@ fun AddIngredientsScreen(
                 onClickClearAll = viewModel::onClearAllClick
             )
         },
+        bottomBar = {
+            Button(
+                onClick = viewModel::onNextClick,
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(containerColor = Black),
+                modifier = Modifier.padding(12.dp).fillMaxWidth()
+            ) {
+                Text("Next", color = White)
+            }
+        },
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background,
@@ -41,14 +51,6 @@ fun AddIngredientsScreen(
                 .padding(paddingValues),
         ) {
             Text("Add Ingredients Screen")
-            Button(
-                onClick = viewModel::onNextClick,
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(containerColor = Black),
-                modifier = Modifier.padding(12.dp).fillMaxWidth()
-            ) {
-                Text("Next", color = White)
-            }
         }
     }
 }

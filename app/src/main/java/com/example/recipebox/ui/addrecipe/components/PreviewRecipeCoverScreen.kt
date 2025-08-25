@@ -31,6 +31,16 @@ fun PreviewRecipeCoverScreen(
                 onClickClearAll = viewModel::onClearAllClick
             )
         },
+        bottomBar = {
+            Button(
+                onClick = viewModel::onSaveImageClick,
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(containerColor = Black),
+                modifier = Modifier.padding(12.dp).fillMaxWidth()
+            ) {
+                Text("Save", color = White)
+            }
+        },
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background,
@@ -41,14 +51,6 @@ fun PreviewRecipeCoverScreen(
                 .padding(paddingValues),
         ) {
             Text("Preview Recipe Cover Screen")
-            Button(
-                onClick = viewModel::onSaveImageClick,
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(containerColor = Black),
-                modifier = Modifier.padding(12.dp).fillMaxWidth()
-            ) {
-                Text("Save", color = White)
-            }
         }
     }
 }

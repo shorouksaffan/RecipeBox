@@ -32,6 +32,18 @@ fun RecipeIntroductionPreviewScreen(state: AddRecipeUiState, viewModel: AddRecip
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background,
+        bottomBar = {
+            Button(
+                onClick = viewModel::onNextClick,
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(containerColor = Black),
+                modifier = Modifier
+                    .padding(12.dp)
+                    .fillMaxWidth()
+            ) {
+                Text("Next", color = White)
+            }
+        }
     ) { paddingValues ->
         Box {
             Column(
@@ -41,16 +53,6 @@ fun RecipeIntroductionPreviewScreen(state: AddRecipeUiState, viewModel: AddRecip
                     .padding(paddingValues),
             ) {
                 Text("Add Instructions Screen")
-                Button(
-                    onClick = viewModel::onNextClick,
-                    shape = CircleShape,
-                    colors = ButtonDefaults.buttonColors(containerColor = Black),
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text("Next", color = White)
-                }
             }
             Row(
                 modifier = Modifier

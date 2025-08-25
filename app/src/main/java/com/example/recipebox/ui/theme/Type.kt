@@ -132,6 +132,14 @@ object RecipeBoxTypography {
         letterSpacing = 0.sp
     )
 
+    val body3 = TextStyle(
+        fontFamily = montserratFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 16.8.sp,
+        letterSpacing = 0.sp
+    )
+
     val body4 = TextStyle(
         fontFamily = montserratFontFamily,
         fontWeight = FontWeight.Bold,

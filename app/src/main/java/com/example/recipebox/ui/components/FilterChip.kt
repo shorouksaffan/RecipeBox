@@ -191,7 +191,7 @@ private fun SectionBox(label: String, content: @Composable ColumnScope.() -> Uni
 }
 
 @Composable
-private fun SelectableChip(text: String, isSelected: Boolean, onClick: () -> Unit) {
+fun SelectableChip(text: String, isSelected: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .clip(CircleShape)

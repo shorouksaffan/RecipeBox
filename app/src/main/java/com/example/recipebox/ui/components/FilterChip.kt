@@ -30,12 +30,12 @@ private val ChipBorder = Color(0xFFE1E1E1)
 private val ButtonBlack = Color(0xFF111111)
 
 @Composable
-fun Filterchip(
+fun FilterChip(
     modifier: Modifier = Modifier,
     onConfirm: (Int, String, List<String>) -> Unit = { _, _, _ -> },
     onClearAll: () -> Unit = {}
 ) {
-    var cookTime by remember { mutableStateOf(48f) }
+    var cookTime by remember { mutableFloatStateOf(48f) }
     var selectedDifficulty by remember { mutableStateOf("Medium") }
     var selectedTypes by remember { mutableStateOf(setOf("Snack", "Brunch")) }
 
@@ -212,8 +212,8 @@ private fun SelectableChip(text: String, isSelected: Boolean, onClick: () -> Uni
 
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFFF5FAF0)
-private fun FilterchipPreview() {
+private fun FilterChipPreview() {
     MaterialTheme {
-        Filterchip()
+        FilterChip()
     }
 }

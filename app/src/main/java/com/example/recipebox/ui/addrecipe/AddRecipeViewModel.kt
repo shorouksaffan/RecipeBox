@@ -150,4 +150,84 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
             }
         }
     }
+
+    fun onRecipeNameChange(name: String) {
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(recipeName = name)
+            )
+        }
+    }
+
+    fun onIncrementServingCount() {
+        val currentCount = addRecipeScreenState.value.addRecipeUiState.servingCount
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(servingCount = currentCount + 1)
+            )
+        }
+    }
+
+    fun onDecrementServingCount() {
+        val currentCount = addRecipeScreenState.value.addRecipeUiState.servingCount
+        if (currentCount > 0) {
+            _addRecipeScreenState.update {
+                it.copy(
+                    addRecipeUiState = it.addRecipeUiState.copy(servingCount = currentCount - 1)
+                )
+            }
+        }
+    }
+
+    fun onCookTimeHoursChange(hours: String) {
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(cookTimeHours = hours)
+            )
+        }
+    }
+
+    fun onCookTimeMinutesChange(minutes: String) {
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(cookTimeMinutes = minutes)
+            )
+        }
+    }
+
+    fun onDifficultySelected(difficulty: Difficulty) {
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(selectedDifficulty = difficulty)
+            )
+        }
+    }
+
+    fun onDishTypeSelected(dishType: DishType) {
+        val currentSelections = addRecipeScreenState.value.addRecipeUiState.selectedDishTypes.toMutableSet()
+        if (currentSelections.contains(dishType)) {
+            currentSelections.remove(dishType)
+        } else {
+            currentSelections.add(dishType)
+        }
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(selectedDishTypes = currentSelections)
+            )
+        }
+    }
+
+    fun onDietaryTargetSelected(dietaryTarget: DietaryTarget) {
+        val currentSelections = addRecipeScreenState.value.addRecipeUiState.selectedDietaryTargets.toMutableSet()
+        if (currentSelections.contains(dietaryTarget)) {
+            currentSelections.remove(dietaryTarget)
+        } else {
+            currentSelections.add(dietaryTarget)
+        }
+        _addRecipeScreenState.update {
+            it.copy(
+                addRecipeUiState = it.addRecipeUiState.copy(selectedDietaryTargets = currentSelections)
+            )
+        }
+    }
 }

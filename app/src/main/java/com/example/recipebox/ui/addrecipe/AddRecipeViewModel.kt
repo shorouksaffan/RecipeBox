@@ -256,7 +256,7 @@ class AddRecipeViewModel @Inject constructor(private val addRecipeUseCase: AddRe
     fun onSaveClick() {
         val uiState = addRecipeScreenState.value.addRecipeUiState
         val newRecipe = Recipe(
-            id = 0, // Assuming ID is auto-generated
+            id = 0,
             title = uiState.recipeName,
             imageUri = uiState.coverImageUri?.toString(),
             ingredients = uiState.ingredients,

@@ -5,7 +5,7 @@ Note-taking app that allows users to save, view, delete and lock their personal 
 
 ## Branch Strategy
 
-- `main` – Final stable code
+- `master` – Final stable code
 - `dev` – Shared development branch
 - `feature/*` – Each team member’s task
 
@@ -27,38 +27,29 @@ Note-taking app that allows users to save, view, delete and lock their personal 
 - Repository setup, README, branch strategy (`dev` / `feature/*` / `master`), and task distribution were handled by **Shorouk Saffan**.
 
 ---
-### Task 1: -> Ismail Ayman
-  - `data\`
+### Task 1: initial-core-files -> eslam
+  - `core\`
     
 ---
 
-### Task 2:
-  - `di\`
+### Task 2: -> Mohamed Mostafa
+  - `ui\splash-screen\`
+  - `ui\search`
+  - `ui\recipe`
+  - `ui\save`
+  - `ui\collections`
 
 ---
 
-### Task 3: -> Ismail Ayman
+### Task 3: -> Ebrahim Gamal
+  - `feature\ui-onvoarding`
+
+---
+
+### Task 4: -> joseph
+  - `feature\addRecipe` 
+  - `fixing bugs` 
+
+
+### Task 5: -> Ismail Ayman
   - `domain\`
-
----
-
-### Task 4: -> Ebrahim Gamal
-  - `ui\addrecipe\` 
-  - `ui\components\` 
-  - `ui\onboarding\` 
-
----
-
-### Task 5: -> Mohamed Mostafa
-  - `ui\recipe\` 
-  - `ui\saved\` 
-  - `ui\search\`
- - `ui\splash\` 
-
----
-
-### Task 6:
-  - `mainactivity.kt`
-  - `navigation\`
-  - `RecipeBoxApplication.kt`
-

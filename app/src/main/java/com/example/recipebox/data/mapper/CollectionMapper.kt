@@ -5,7 +5,7 @@ import com.example.recipebox.domain.model.Collection
 
 fun CollectionEntity.toDomain() = Collection(
     id = id,
-    name = name
+    name = name,
 )
 
 fun Collection.toEntity() = CollectionEntity(

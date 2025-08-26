@@ -2,4 +2,15 @@
 <resources>
 
     <style name="Theme.RecipeBox" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.RecipeBox.Splash" parent="Theme.SplashScreen">
+        <!-- Set background color -->
+        <item name="windowSplashScreenBackground">#3E5BA9</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.RecipeBox</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

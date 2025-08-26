@@ -4,6 +4,7 @@ import com.example.recipebox.domain.repository.CollectionRepository
 import com.example.recipebox.domain.repository.RecipeRepository
 import com.example.recipebox.domain.usecase.AddRecipeUseCase
 import com.example.recipebox.domain.usecase.CreateCollectionUseCase
+import com.example.recipebox.domain.usecase.GetCollectionImageUseCase
 import com.example.recipebox.domain.usecase.GetCollectionUseCase
 import com.example.recipebox.domain.usecase.GetRecipesUseCase
 import com.example.recipebox.domain.usecase.SearchRecipesUseCase
@@ -48,5 +49,12 @@ object UseCaseModule {
         repository: CollectionRepository
     ): GetCollectionUseCase {
         return GetCollectionUseCase(repository)
+    }
+
+    @Provides
+    fun provideGetCollectionImageUseCase(
+        repository: RecipeRepository
+    ): GetCollectionImageUseCase {
+        return GetCollectionImageUseCase(repository)
     }
 }

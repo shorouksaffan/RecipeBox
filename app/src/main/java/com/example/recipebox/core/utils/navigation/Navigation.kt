@@ -10,6 +10,7 @@ enum class Screen {
     COLLECTION_DETAIL,
     SAVED,
     SEARCH,
+    RECIPE_DETAIL
 
 }
 
@@ -23,4 +24,14 @@ sealed class Navigation(val route: String) {
     object CollectionDetailScreen : Navigation(Screen.COLLECTION_DETAIL.name)
     object SavedScreen : Navigation(Screen.SAVED.name)
     object SearchScreen : Navigation(Screen.SEARCH.name)
+    object RecipeDetailScreen : Navigation(Screen.RECIPE_DETAIL.name)
+
+    fun withArgs(vararg args: String): String {
+        return buildString {
+            append(route)
+            args.forEach { arg ->
+                append("/$arg")
+            }
+        }
+    }
 }

@@ -13,7 +13,6 @@ fun RecipeEntity.toDomain() = Recipe(
 )
 
 fun Recipe.toEntity() = RecipeEntity(
-    id = id,
     title = title,
     imageUri = imageUri,
     ingredients = ingredients,
